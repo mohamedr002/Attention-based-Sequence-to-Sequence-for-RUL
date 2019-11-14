@@ -9,8 +9,11 @@ This code requires the following:
 * Pytorch v1.2+
 
 ### Data
-The model performance is tested on NASA turbofan engines dataset[https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/#turbofan]. You can see more details about data here 
+The model performance is tested on NASA turbofan engines dataset [https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/#turbofan]. 
+
+### Data Preprocessing
+After downloading you can do the data preprocessing steps you can check this file `data_processing.py`
 
 ### Usage
-To run the code, we have to main file, single working condition model `model_single_wk_data.py` and multiple working model  `model_multi_wk_data.py.
+To run the code, we have to main file, single working condition model `model_single_wk_data.py` and multiple working model  `model_multi_wk_data.py. The files will show the training results and then show the performance on test set. 
 
