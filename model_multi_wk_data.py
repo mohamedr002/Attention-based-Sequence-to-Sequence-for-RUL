@@ -224,44 +224,46 @@ def epoch_train(data_identifier,encoder, attention_decoder, predictor,criterion)
     print(" Performance on Dataset:%s:::Testing RMSE:%f=== Testing Score:%f" %(data_identifier,test_rmse,test_score))
     return total_results
 
-seq_length=30;batch_size=10
-shuffle_stats=True
-data_identifiers=['FD002','FD004']
-num_run=1
-full_results_run={'FD002':
-                  {'rmse_run':[],'score_run':[],'test_rmse_run':[],
-                  'test_score_run':[], 'encoder_run':[],'predictor_run':[],
-                  'decoder_run':[], 'total_inputs_run':[],'total_outputs_run':[] },
-                  
-                  'FD004':
-                  {'rmse_run':[],'score_run':[],'test_rmse_run':[],
-                  'test_score_run':[], 'encoder_run':[],'predictor_run':[],
-                  'decoder_run':[], 'total_inputs_run':[],'total_outputs_run':[] }}
-hyperparameters={'epoch': 16,'lr': 3e-4,'seq_length':30, 'hidden_size':18, 'batch_size': 10,}
 
-for data in data_identifiers:
+if __name__ == "__main__":
+    seq_length=30;batch_size=10
+    shuffle_stats=True
+    data_identifiers=['FD002','FD004']
+    num_run=1
+    full_results_run={'FD002':
+                      {'rmse_run':[],'score_run':[],'test_rmse_run':[],
+                      'test_score_run':[], 'encoder_run':[],'predictor_run':[],
+                      'decoder_run':[], 'total_inputs_run':[],'total_outputs_run':[] },
 
-#    for i in range(num_run):
-# dimension paramteres 
-    input_size=9; hidden_size= 18;batch_size=10;n_layers=1
-    output_size=9;seq_length=30; criterion=RMSELoss()
-    # initialization
-    encoder = EncoderLSTM(input_size,hidden_size,batch_size,n_layers).to(device)
-    attention_decoder=AttnDecoderLSTM(hidden_size, output_size, seq_length,batch_size,n_layers).to(device)
-    predictor=regressor(hidden_size).to(device)
-    #run the training
-    print('Start Training on Datset::%s' %(data))
-    total_results =epoch_train(data,encoder,attention_decoder,predictor,criterion)
-    
-    full_results_run[data]['rmse_run'].append(total_results['rmse_epoch'])
-    full_results_run[data]['score_run'].append(total_results['score_epoch'])
-    full_results_run[data]['test_rmse_run'].append(total_results['test_rmse_epoch'])
-    full_results_run[data]['test_score_run'].append(total_results['test_score_epoch'])
-    full_results_run[data]['encoder_run'].append(total_results['encoder_epoch'])
-    full_results_run[data]['encoder_run'].append(total_results['decoder_epoch'])
-    full_results_run[data]['predictor_run'].append(total_results['predictor_epoch'])
-    full_results_run[data]['total_inputs_run'].append(total_results['total_inputs'])
-    full_results_run[data]['total_outputs_run'].append(total_results['total_outputs'])
+                      'FD004':
+                      {'rmse_run':[],'score_run':[],'test_rmse_run':[],
+                      'test_score_run':[], 'encoder_run':[],'predictor_run':[],
+                      'decoder_run':[], 'total_inputs_run':[],'total_outputs_run':[] }}
+    hyperparameters={'epoch': 16,'lr': 3e-4,'seq_length':30, 'hidden_size':18, 'batch_size': 10,}
 
-torch.save({'parameters':hyperparameters,
-            'full_results_10_run':full_results_run,},  'Final_FD002_FD004.pt')
+    for data in data_identifiers:
+
+    #    for i in range(num_run):
+    # dimension paramteres 
+        input_size=9; hidden_size= 18;batch_size=10;n_layers=1
+        output_size=9;seq_length=30; criterion=RMSELoss()
+        # initialization
+        encoder = EncoderLSTM(input_size,hidden_size,batch_size,n_layers).to(device)
+        attention_decoder=AttnDecoderLSTM(hidden_size, output_size, seq_length,batch_size,n_layers).to(device)
+        predictor=regressor(hidden_size).to(device)
+        #run the training
+        print('Start Training on Datset::%s' %(data))
+        total_results =epoch_train(data,encoder,attention_decoder,predictor,criterion)
+
+        full_results_run[data]['rmse_run'].append(total_results['rmse_epoch'])
+        full_results_run[data]['score_run'].append(total_results['score_epoch'])
+        full_results_run[data]['test_rmse_run'].append(total_results['test_rmse_epoch'])
+        full_results_run[data]['test_score_run'].append(total_results['test_score_epoch'])
+        full_results_run[data]['encoder_run'].append(total_results['encoder_epoch'])
+        full_results_run[data]['encoder_run'].append(total_results['decoder_epoch'])
+        full_results_run[data]['predictor_run'].append(total_results['predictor_epoch'])
+        full_results_run[data]['total_inputs_run'].append(total_results['total_inputs'])
+        full_results_run[data]['total_outputs_run'].append(total_results['total_outputs'])
+
+    torch.save({'parameters':hyperparameters,
+                'full_results_10_run':full_results_run,},  'Final_FD002_FD004.pt')
