@@ -196,32 +196,32 @@ def epoch_train(data,train_dl,test_dl,seq_length,encoder, attention_decoder, pre
     print(" Performance on Test Set ::Datetset:%s::::::Testing RMSE:%f::::::::Testing Scor:%f" % (data,test_rmse,test_score))
     return rmse_epoch,score_epoch,test_rmse_epoch,test_score_epoch,inputs,outputs,encoder, attention_decoder, predictor
 
+if __name__ == "__main__":
+    seq_length=30;batch_size=10
+    shuffle_stats=True
+    criterion=RMSELoss()
+    full_results={'FD003':[]}#,'FD003':[]}
+    datasets=['FD003'] # FD003 
+    print("Evaluation under shuffle status of::%r" % (shuffle_stats))
+    for data in datasets:
+      print('Start Training on Datset:%s' %(data))
+      train_dl,test_dl,dataloders=load_data(data,seq_length,batch_size,shuffle_stats)
+      batch=iter(train_dl)
+      x,y=next(batch)
+      input_size=x.size(1); 
+      hidden_size= 32;
+      n_layers=1
+      output_size=x.size(1)
+      encoder = EncoderLSTM(input_size,hidden_size,batch_size,n_layers).to(device)
+      attention_decoder=AttnDecoderLSTM(hidden_size, output_size, seq_length,batch_size,n_layers).to(device)
+      predictor=regressor(hidden_size).to(device)
+      rmse,score,test_rmse,test_score,inputs,outputs,encoder, attention_decoder, predictor=epoch_train(data,train_dl,test_dl,seq_length,encoder, attention_decoder,predictor,criterion)
 
-seq_length=30;batch_size=10
-shuffle_stats=True
-criterion=RMSELoss()
-full_results={'FD003':[]}#,'FD003':[]}
-datasets=['FD003'] # FD003 
-print("Evaluation under shuffle status of::%r" % (shuffle_stats))
-for data in datasets:
-  print('Start Training on Datset:%s' %(data))
-  train_dl,test_dl,dataloders=load_data(data,seq_length,batch_size,shuffle_stats)
-  batch=iter(train_dl)
-  x,y=next(batch)
-  input_size=x.size(1); 
-  hidden_size= 32;
-  n_layers=1
-  output_size=x.size(1)
-  encoder = EncoderLSTM(input_size,hidden_size,batch_size,n_layers).to(device)
-  attention_decoder=AttnDecoderLSTM(hidden_size, output_size, seq_length,batch_size,n_layers).to(device)
-  predictor=regressor(hidden_size).to(device)
-  rmse,score,test_rmse,test_score,inputs,outputs,encoder, attention_decoder, predictor=epoch_train(data,train_dl,test_dl,seq_length,encoder, attention_decoder,predictor,criterion)
 
- 
-  total_results = {'training_rmse':rmse,'training_score':score,'testing_rmse':test_rmse,'testing_score':test_score, 'enocder_model':encoder.state_dict(),
- 'attn_decoder_model':attention_decoder.state_dict(),
- 'predictor_model':predictor.state_dict(),'inputs':inputs,'reconstructed_inputs':outputs}
-  full_results[data].append(total_results)
-hyperparameters={'epoch': 11,'lr': 3e-4,'seq_length':30, 'hidden_size':32, 'teacher_forcing':0.5,'predictor_hidden_size':32,'Enoder_dropout':0.2,'batch_size': 10,}
-torch.save({'parameters':hyperparameters,
-             'full_results':full_results,}, 'Final_FD003_11_10_12PM.pt')
+      total_results = {'training_rmse':rmse,'training_score':score,'testing_rmse':test_rmse,'testing_score':test_score, 'enocder_model':encoder.state_dict(),
+     'attn_decoder_model':attention_decoder.state_dict(),
+     'predictor_model':predictor.state_dict(),'inputs':inputs,'reconstructed_inputs':outputs}
+      full_results[data].append(total_results)
+    hyperparameters={'epoch': 11,'lr': 3e-4,'seq_length':30, 'hidden_size':32, 'teacher_forcing':0.5,'predictor_hidden_size':32,'Enoder_dropout':0.2,'batch_size': 10,}
+    torch.save({'parameters':hyperparameters,
+                 'full_results':full_results,}, 'Final_FD003_11_10_12PM.pt')
