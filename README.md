@@ -15,5 +15,5 @@ The model performance is tested on NASA turbofan engines dataset [https://ti.arc
 After downloading you can do the data preprocessing steps you can check this file `data_processing.py`
 
 ### Usage
-To run the code, we have to main file, single working condition model `model_single_wk_data.py` and multiple working model  `model_multi_wk_data.py. The files will show the training results and then show the performance on test set. 
+To run the code, we have two main models, single working condition model `model_single_wk_data.py` and multiple working model  `model_multi_wk_data.py. The files will show the training results and then print the performance on test set. 
 
