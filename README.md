@@ -1,7 +1,7 @@
 # Attention based Sequence to Sequence for RUL
  Proposed ATS2S model on C-MAPSS dataset.
 
-This repo contains code of the paper, 	[ Attention based Sequence to Sequence for RUL]. It includes code for estimating remaining useful life machine using sequence to sequence model with axuulary task to improve the feature representation.
+This repo contains code of the paper, 	[ Attention based Sequence to Sequence for RUL] has been accepted in Neurocomputing, 2021. It includes code for estimating remaining useful life machine using sequence to sequence model with axuulary task to improve the feature representation.
 
 ### Dependencies
 This code requires the following:
